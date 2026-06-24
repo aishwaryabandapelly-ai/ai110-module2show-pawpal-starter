@@ -5,12 +5,22 @@
 **a. Initial design**
 
 - Briefly describe your initial UML design.
+
+My initial UML design shows PawPal+ as a simple object-oriented pet care scheduling system. The design connects four main classes: Owner, Pet, Task, and Scheduler. An Owner can have multiple Pets, each Pet can have multiple Tasks, and the Scheduler works with the Owner’s pet/task data to organize daily care activities. I kept the UML simple so the system would be easy to understand before adding more advanced scheduling logic.
+
 - What classes did you include, and what responsibilities did you assign to each?
+
+I included four main classes in my design. The Owner class stores owner information and manages the list of pets. The Pet class stores details about each pet, such as name, species, and age, and keeps track of that pet’s care tasks. The Task class represents one pet care activity, such as feeding, walking, medication, grooming, or an appointment, with details like time, duration, priority, frequency, and completion status. The Scheduler class is responsible for organizing tasks, sorting them, filtering them, detecting conflicts, and helping generate a daily care plan.
 
 **b. Design changes**
 
 - Did your design change during implementation?
+
+Yes, my design changed slightly during implementation. My first UML design was focused mainly on the basic relationship between Owner, Pet, Task, and Scheduler. As I started thinking about the actual scheduling behavior, I realized the Task and Scheduler classes needed more responsibility than the original skeleton showed.
+
 - If yes, describe at least one change and why you made it.
+
+One change I made was adding more scheduling-related details to the Task class, such as duration, priority, frequency, and completion status. I made this change because the README requires the system to generate a daily plan based on constraints and priorities, so a task needed more information than just a description and time. I also gave the Scheduler class methods for sorting, filtering, conflict detection, and recurring tasks so the scheduling logic would stay organized in one place instead of being mixed into the UI.
 
 ---
 
