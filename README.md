@@ -54,17 +54,7 @@ Paste a sample of your app's CLI or Streamlit output here so a reader can see wh
 #   ...
 ```
 
-## 🧪 Testing PawPal+
-
-```bash
-# Run the full test suite:
-pytest
-
-# Run with coverage:
-pytest --cov
-```
-
-Sample test output:
+### Actual CLI Output
 
 ```text
 ========================================
@@ -89,22 +79,47 @@ Pending Tasks
 - 18:00  Dinner
 - 07:30  Feed cat
 - 14:00  Vet appointment
+```
+
+## 🧪 Testing PawPal+
+
+```bash
+# Run the full test suite:
+pytest
+
+# Run with coverage:
+pytest --cov
+```
+
+### What the Tests Cover
+
+The automated test suite verifies these core behaviors:
+
+- Marking a task complete updates its completion status.
+- Adding a task to a pet increases that pet's task list.
+- Tasks are sorted correctly in chronological order.
+- Completing a daily recurring task creates the next occurrence for the following day.
+- Conflict detection flags overlapping tasks.
+
+**Confidence Level: ⭐⭐⭐⭐☆**
+
+I am confident that the core scheduler works because the main task-management and
+scheduling behaviors are covered by automated tests. In a future version, I would add
+more edge-case tests for invalid time formats, empty pet schedules, non-recurring task
+behavior, and tasks that cross midnight.
+
+### Latest Test Output
 
 ```text
-
-
 ======================================= test session starts =======================================
 platform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0
 rootdir: /Users/aish/Desktop/ai110-module2show-pawpal-starter
 plugins: anyio-4.14.1
-collected 2 items
+collected 5 items
 
-tests/test_pawpal.py ..                                                                     [100%]
+tests/test_pawpal.py .....                                                                  [100%]
 
-======================================== 2 passed in 0.02s ========================================
-```
-
-
+======================================== 5 passed in 0.02s ========================================
 ```
 
 ## 📐 Smarter Scheduling
@@ -137,10 +152,15 @@ and self-maintaining.
 
 Describe your app in numbered steps so a reader can follow along without watching a video:
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. The user opens the Streamlit app and sees the PawPal+ dashboard.
+2. The user adds a pet by entering the pet's name, species, and age.
+3. The pet appears in the task form dropdown, showing that the UI is connected to the backend logic.
+4. The user schedules a task by choosing a pet, entering a description, time, duration, priority, and frequency.
+5. PawPal+ creates a real `Task` object and adds it to the selected `Pet`.
+6. The task appears under **Today's Schedule**, sorted by time using the `Scheduler`.
+7. If two tasks overlap, the app displays a conflict warning.
+8. If a recurring daily or weekly task is completed, the scheduler creates the next occurrence automatically.
+9. The CLI demo in `main.py` verifies the same backend logic outside the Streamlit UI.
+10. The automated test suite confirms that core scheduler behaviors work correctly.
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
