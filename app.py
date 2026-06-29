@@ -71,15 +71,36 @@ st.divider()
 st.subheader("Today's Schedule")
 
 scheduler = Scheduler(owner)
-daily_plan = scheduler.generate_daily_plan()
+daily_plan = scheduler.generate_daily_plan()  # tasks sorted by time
 
 if not daily_plan:
     st.info("No tasks yet. Add a pet and schedule a task to see the plan.")
 else:
-    # Surface any scheduling conflicts as warnings rather than crashing.
-    for warning in scheduler.conflict_warnings():
-        st.warning(warning)
+    # Look up which pet each task belongs to, for a clearer table.
+    task_owner = {}
+    for pet in owner.pets:
+        for task in pet.tasks:
+            task_owner[id(task)] = pet.name
 
+    # Build one clean table row per task (already sorted by time).
+    rows = []
     for task in daily_plan:
-        status = "✅" if task.completed else "⬜"
-        st.write(f"{status} **{task.time}** — {task.description} ({task.priority})")
+        rows.append(
+            {
+                "Status": "✅" if task.completed else "⬜",
+                "Time": task.time,
+                "Task": task.description,
+                "Pet": task_owner.get(id(task), "—"),
+                "Priority": task.priority,
+                "Frequency": task.frequency,
+            }
+        )
+    st.table(rows)
+
+    # Surface any scheduling conflicts as warnings rather than crashing.
+    warnings = scheduler.conflict_warnings()
+    if warnings:
+        for warning in warnings:
+            st.warning(warning)
+    else:
+        st.success("No scheduling conflicts — your day is clear! 🐾")
