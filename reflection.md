@@ -16,11 +16,11 @@ I included four main classes in my design. The Owner class stores owner informat
 
 - Did your design change during implementation?
 
-Yes, my design changed slightly during implementation. My first UML design was focused mainly on the basic relationship between Owner, Pet, Task, and Scheduler. As I started thinking about the actual scheduling behavior, I realized the Task and Scheduler classes needed more responsibility than the original skeleton showed.
+Yes, my design changed slightly during implementation. My original UML design had the right overall structure with Owner, Pet, Task, and Scheduler, so I did not change the main class relationships. However, as I moved from design to code, I realized the Scheduler needed more practical logic to support the project requirements, such as sorting tasks, prioritizing tasks, filtering by status, detecting conflicts, and generating a daily plan.
 
 - If yes, describe at least one change and why you made it.
 
-One change I made was adding more scheduling-related details to the Task class, such as duration, priority, frequency, and completion status. I made this change because the README requires the system to generate a daily plan based on constraints and priorities, so a task needed more information than just a description and time. I also gave the Scheduler class methods for sorting, filtering, conflict detection, and recurring tasks so the scheduling logic would stay organized in one place instead of being mixed into the UI.
+One change I made was giving the Scheduler class more responsibility. Instead of only storing an Owner object, it now includes methods such as sort_by_time(), sort_by_priority(), filter_by_pet(), filter_by_status(), detect_conflicts(), and generate_daily_plan(). I made this change because PawPal+ needs to produce a daily plan based on task time, duration, priority, and owner constraints. I also added helper logic like _time_to_minutes() and PRIORITY_ORDER so tasks can be sorted correctly instead of staying in the order they were added.After reviewing Claude’s feedback, I did not make major structural changes because the class separation was already clean. I only noted that task times should use the "HH:MM" format, since _time_to_minutes() depends on that format.
 
 ---
 

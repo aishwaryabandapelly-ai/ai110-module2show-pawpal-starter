@@ -15,7 +15,7 @@ def _time_to_minutes(time_str):
 
 @dataclass
 class Task:
-    """A single pet care task such as a walk, feeding, or appointment."""
+    """A single pet care task. Time should be written in 'HH:MM' 24-hour format."""
 
     description: str
     time: str
