@@ -6,7 +6,7 @@
 
 - Briefly describe your initial UML design.
 
-My initial UML design shows PawPal+ as a simple object-oriented pet care scheduling system. The design connects four main classes: Owner, Pet, Task, and Scheduler. An Owner can have multiple Pets, each Pet can have multiple Tasks, and the Scheduler works with the Owner’s pet/task data to organize daily care activities. I kept the UML simple so the system would be easy to understand before adding more advanced scheduling logic.
+My initial UML design shows PawPal+ as a simple object-oriented pet care scheduling system. The design connects four main classes: Owner, Pet, Task, and Scheduler. An Owner can have multiple Pet objects, each Pet can have multiple Task objects, and the Scheduler works with the owner’s pet and task data to organize daily care activities. I kept the UML simple so the system would be easy to understand before adding more advanced scheduling logic.
 
 - What classes did you include, and what responsibilities did you assign to each?
 
@@ -34,7 +34,22 @@ One change I made was giving the Scheduler class more responsibility. Instead of
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
+
+My conflict detector only flags tasks that fall on the **same calendar day** and
+compares them using each task's start time plus its duration. It does **not** account
+for buffer/travel time between tasks, and it assumes no task crosses midnight. In other
+words, a 30-minute walk at 08:00 and another task at 08:15 are correctly flagged as
+overlapping, but a task ending at 08:00 and one starting at 08:00 are treated as fine
+even though a real owner might need a few minutes in between. I chose the simpler
+"start + duration overlap, same day" rule over a full interval-tree or gap-aware model.
+
 - Why is that tradeoff reasonable for this scenario?
+
+For a single pet owner planning a handful of daily tasks, the lightweight O(n²) overlap
+check is fast, easy to read, and easy to verify by hand. The edge cases it skips
+(buffer time, midnight-spanning tasks) are rare for everyday pet care and would add
+real complexity for little practical benefit, so a clear warning message is more useful
+here than a perfectly precise scheduling engine.
 
 ---
 

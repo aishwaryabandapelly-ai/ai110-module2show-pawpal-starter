@@ -76,6 +76,10 @@ daily_plan = scheduler.generate_daily_plan()
 if not daily_plan:
     st.info("No tasks yet. Add a pet and schedule a task to see the plan.")
 else:
+    # Surface any scheduling conflicts as warnings rather than crashing.
+    for warning in scheduler.conflict_warnings():
+        st.warning(warning)
+
     for task in daily_plan:
         status = "✅" if task.completed else "⬜"
         st.write(f"{status} **{task.time}** — {task.description} ({task.priority})")

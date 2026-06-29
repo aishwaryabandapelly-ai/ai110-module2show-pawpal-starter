@@ -66,20 +66,72 @@ pytest --cov
 
 Sample test output:
 
+```text
+========================================
+Today's Schedule
+========================================
+[ ] 07:30  Feed cat           (medium)
+[ ] 08:00  Morning walk       (high)
+[ ] 14:00  Vet appointment    (high)
+[ ] 18:00  Dinner             (high)
+
+========================================
+Tasks by Priority
+========================================
+- Morning walk       (high)
+- Dinner             (high)
+- Vet appointment    (high)
+- Feed cat           (medium)
+
+========================================
+Pending Tasks
+========================================
+- 18:00  Dinner
+- 07:30  Feed cat
+- 14:00  Vet appointment
+
+```text
+
+
+======================================= test session starts =======================================
+platform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/aish/Desktop/ai110-module2show-pawpal-starter
+plugins: anyio-4.14.1
+collected 2 items
+
+tests/test_pawpal.py ..                                                                     [100%]
+
+======================================== 2 passed in 0.02s ========================================
 ```
-# Paste your pytest output here
+
+
 ```
 
 ## 📐 Smarter Scheduling
 
-> Fill in once you've implemented scheduling logic.
+PawPal+ adds lightweight algorithms so the daily plan is organized, conflict-aware,
+and self-maintaining.
 
 | Feature | Method(s) | Notes |
 |---------|-----------|-------|
-| Task sorting | | e.g., by priority, duration |
-| Filtering | | e.g., skip tasks if time runs out |
-| Conflict handling | | e.g., overlapping time slots |
-| Recurring tasks | | e.g., daily vs. weekly |
+| Task sorting (by time) | `Scheduler.sort_by_time()` | Sorts `Task` objects by their `"HH:MM"` time using `sorted()` with a `key` lambda that converts the time string to minutes (`_time_to_minutes`). |
+| Task sorting (by priority) | `Scheduler.sort_by_priority()` | Sorts high → medium → low via a `PRIORITY_ORDER` lookup. |
+| Filtering | `Scheduler.filter_by_pet()`, `Scheduler.filter_by_status()` | Return tasks for a single pet, or only completed / pending tasks. |
+| Conflict detection | `Scheduler.detect_conflicts()`, `Scheduler.conflict_warnings()` | `detect_conflicts()` flags same-day tasks whose times overlap (start + duration); `conflict_warnings()` turns each conflict into a printable warning string instead of crashing. |
+| Recurring tasks | `Task.next_occurrence()`, `Scheduler.mark_task_complete()` | Completing a daily/weekly task auto-creates the next instance. `next_occurrence()` uses `datetime.timedelta` to advance the `due_date` by 1 day (daily) or 7 days (weekly). |
+
+### How it works
+
+- **Sorting** — Times are strings like `"08:00"`, so they are converted to minutes
+  since midnight before comparing. `sort_by_time(tasks)` returns a new sorted list.
+- **Filtering** — `filter_by_pet("Rex")` walks the owner's pets; `filter_by_status(False)`
+  returns every pending task across all pets.
+- **Conflict detection** — For each pair of tasks on the same `due_date`, a conflict is
+  reported when the later task starts before the earlier one ends. Warnings are returned
+  as friendly strings, so the CLI and Streamlit UI can simply display them.
+- **Recurring tasks** — When `mark_task_complete()` is called on a daily or weekly task,
+  the scheduler builds its `next_occurrence()` (today + 1 day, or + 7 days) and adds that
+  fresh, uncompleted task back to the same pet.
 
 ## 📸 Demo Walkthrough
 
