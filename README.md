@@ -22,6 +22,17 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## ✨ Features
+
+- **Owner / Pet / Task management** — add owners, pets (name, species, age), and care tasks (description, time, duration, priority, frequency).
+- **Sort by time** — the daily plan is ordered chronologically via `Scheduler.sort_by_time()`.
+- **Sort by priority** — view tasks high → medium → low with `Scheduler.sort_by_priority()`.
+- **Filtering** — narrow tasks by pet (`filter_by_pet()`) or by completion status (`filter_by_status()`).
+- **Conflict detection** — overlapping same-day tasks are flagged as readable warnings via `Scheduler.conflict_warnings()`.
+- **Recurring tasks** — completing a daily or weekly task auto-schedules its next occurrence (`Task.next_occurrence()`).
+- **Streamlit UI** — add pets/tasks through forms and see the sorted schedule, conflict warnings, and an all-clear message.
+- **CLI demo + tests** — `main.py` exercises the same logic in the terminal, backed by an automated `pytest` suite.
+
 ## Getting started
 
 ### Setup
